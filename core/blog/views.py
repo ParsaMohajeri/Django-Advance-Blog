@@ -1,17 +1,8 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView,RedirectView
 from .models import Post
+from django.views.generic import ListView
 # Create your views here.
-
-
-# function base view shows a Template
-"""
-def indexView(request):
-
-    name="parsa"
-    context={"name":name}
-    return render(request, "index.html",context)
-"""
 class IndexView(TemplateView):
     template_name="index.html"
     def get_context_data(self,**kwargs):
@@ -20,12 +11,16 @@ class IndexView(TemplateView):
         context["posts"]=Post.objects.all()
         return context
 
-
-"""FBV for redirect
-from django.shortcuts import redirect
-def RedirectToMaktab(request):
-    return redirect('https://maktabkhooneh.org/')
-"""
 class RedirectToMaktab(RedirectView):
     url="http://maktabkhooneh.org"
+
+
+class PostList(ListView):
+    # queryset=Post.objects.all()
     
+    context_object_name="posts"
+    def get_queryset(self):
+        posts=Post.objects.filter(status=False)
+        return posts
+
+
