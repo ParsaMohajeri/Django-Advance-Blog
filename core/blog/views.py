@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.base import TemplateView,RedirectView
 from .models import Post
-from django.views.generic import ListView
+from django.views.generic import ListView,DetailView
 # Create your views here.
 class IndexView(TemplateView):
     template_name="index.html"
@@ -15,7 +15,7 @@ class RedirectToMaktab(RedirectView):
     url="http://maktabkhooneh.org"
 
 
-class PostList(ListView):
+class PostListView(ListView):
     queryset=Post.objects.filter(status=True)
     # model=Post
     paginate_by=2
@@ -24,5 +24,9 @@ class PostList(ListView):
     # def get_queryset(self):
     #     posts=Post.objects.filter(status=True)
         # return posts
+
+
+class PostDetailView(DetailView):
+    model=Post
 
 
