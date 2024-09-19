@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateView,RedirectView
 from .models import Post
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from .forms import PostForm
+from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
 # Create your views here.
 class IndexView(TemplateView):
     template_name="index.html"
@@ -16,7 +17,7 @@ class RedirectToMaktab(RedirectView):
     url="http://maktabkhooneh.org"
 
 
-class PostListView(ListView):
+class PostListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     queryset=Post.objects.filter(status=True)
     # model=Post
     paginate_by=4
@@ -27,7 +28,7 @@ class PostListView(ListView):
         # return posts
 
 
-class PostDetailView(DetailView):
+class PostDetailView(LoginRequiredMixin,DetailView):
     model=Post
 
 
@@ -42,7 +43,8 @@ class PostCreateView(FormView):
         return super().form_valid(form)
 
 """
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin,CreateView):
+    permission_required='blog.view_post'
     model=Post
     # fields=['author', 'title', 'content','status','category','published_date']
     form_class=PostForm
@@ -57,7 +59,7 @@ class PostCreateView(CreateView):
 
 
 
-class PostEditView(UpdateView):
+class PostEditView(LoginRequiredMixin,UpdateView):
     model=Post
     form_class=PostForm
     success_url='/blog/post/'
@@ -65,6 +67,8 @@ class PostEditView(UpdateView):
 
 
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(LoginRequiredMixin,DeleteView):
     model=Post
     success_url="/blog/post/"
+
+
