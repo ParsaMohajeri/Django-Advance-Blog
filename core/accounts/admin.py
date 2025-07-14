@@ -20,7 +20,8 @@ class CustomeUserAdmin(UserAdmin):
         ("important date", {"fields": ["last_login"]}),
     ]
     add_fieldsets = [
-        (None,{"classes": ["wide"],"fields": ["email", "password1","password2", "is_staff", "is_active","is_superuser"],},),
+        (None,{"classes": ["wide"],"fields": ["email", "password1"
+        ,"password2", "is_staff", "is_active","is_superuser"],},),
     ]
 admin.site.register(Profile)
 admin.site.register(User,CustomeUserAdmin)
