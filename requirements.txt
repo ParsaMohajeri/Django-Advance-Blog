@@ -1,6 +1,6 @@
-django >3.2,<3.3
+django==3.2.25
+djangorestframework
+markdown
 python-decouple
 Pillow
-djangorestframework
-markdown      
 django-filter
