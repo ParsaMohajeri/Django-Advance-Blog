@@ -4,8 +4,14 @@ from .models import Post
 from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
 from .forms import PostForm
 from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.http import HttpResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
 # Create your views here.
 class IndexView(TemplateView):
+    """
+    this is just normal view of the site
+    """
     template_name="index.html"
     def get_context_data(self,**kwargs):
         context= super().get_context_data(**kwargs)
@@ -17,7 +23,7 @@ class RedirectToMaktab(RedirectView):
     url="http://maktabkhooneh.org"
 
 
-class PostListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
+class PostListView(LoginRequiredMixin,ListView):
     queryset=Post.objects.filter(status=True)
     # model=Post
     paginate_by=4
@@ -26,6 +32,7 @@ class PostListView(LoginRequiredMixin,PermissionRequiredMixin,ListView):
     # def get_queryset(self):
     #     posts=Post.objects.filter(status=True)
         # return posts
+
 
 
 class PostDetailView(LoginRequiredMixin,DetailView):
@@ -70,5 +77,10 @@ class PostEditView(LoginRequiredMixin,UpdateView):
 class PostDeleteView(LoginRequiredMixin,DeleteView):
     model=Post
     success_url="/blog/post/"
+
+@api_view()
+def api_post_list_view(request):
+    return Response("ok")
+
 
 
