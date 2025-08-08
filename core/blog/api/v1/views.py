@@ -11,7 +11,8 @@ from rest_framework import mixins
 from rest_framework import viewsets
 from .permissions import IsOwnerOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
-
+from rest_framework.filters import SearchFilter,OrderingFilter
+from .paginations import DefaultPagination
 data={
     "id":1,
     "title":"hello"
@@ -103,11 +104,14 @@ def postDetail(request,id):
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes=[IsAuthenticated,IsOwnerOrReadOnly]
+    permission_classes=[IsAuthenticatedOrReadOnly,IsOwnerOrReadOnly]
     serializer_class=PostSerializer
     queryset = Post.objects.filter(status=True)
-    filter_backends =[DjangoFilterBackend]    
-    filter_fields = ['category','author','status']
+    filter_backends =[DjangoFilterBackend,SearchFilter,OrderingFilter]    
+    filterset_fields = ['category','author','status']
+    search_fields =['title','content']
+    ordering_fields= ['published_date']
+    pagination_class=DefaultPagination
 
 
 
