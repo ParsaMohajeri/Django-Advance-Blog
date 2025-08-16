@@ -12,3 +12,7 @@ django-filter==23.5
 drf-yasg[validation]==1.21.7
 
 # deployment module
+
+
+# email third party modules
+django-mail-templated
