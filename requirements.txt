@@ -1,17 +1,14 @@
 # general modules
-django==3.2.25
-djangorestframework
+django==4.2.14
+djangorestframework==3.14.0
 python-decouple
 Pillow
 coreapi
 openapi-codec
 
-
-
-#third party modules
+# third party modules
 markdown
-django-filter
-drf-yasg[validation]
+django-filter==23.5
+drf-yasg[validation]==1.21.7
 
-
-#deployment module
+# deployment module
