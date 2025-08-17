@@ -5,6 +5,7 @@ python-decouple
 Pillow
 coreapi
 openapi-codec
+django-widget-tweaks
 
 # third party modules
 markdown

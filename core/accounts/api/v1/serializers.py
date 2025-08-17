@@ -126,3 +126,23 @@ class ProfileSerializer (serializers.ModelSerializer):
 class TestEmailSendSerializer():
     pass
  
+
+class ActivationResendApiSerializer(serializers.Serializer):
+    email=serializers.EmailField(required=True)
+
+    def validate(self,attrs):
+        email=attrs.get("email")
+
+
+        try:
+            user_obj=User.objects.get(email=email)
+        except User.DoesNotExist:
+            raise serializers.ValidationError({'details':'user does not exist'})
+
+        if user_obj.is_verified:
+            raise serializers.ValidationError({'details':'user is already activated and verified'})
+
+
+        attrs['user']=user_obj
+
+        return super().validate(attrs)

@@ -42,9 +42,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
     'django_filters',
+    'django.contrib.staticfiles',  
     'drf_yasg',
     'rest_framework_simplejwt',
     'mail_templated',
+    'djoser',
 
 
 
