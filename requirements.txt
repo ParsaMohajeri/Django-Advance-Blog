@@ -17,3 +17,8 @@ drf-yasg[validation]==1.21.7
 
 # email third party modules
 django-mail-templated
+
+
+# refactoring and test
+black
+flake8

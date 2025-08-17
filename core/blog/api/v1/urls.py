@@ -1,13 +1,16 @@
-from django.urls import path,include
-from . import views
+from django.urls import path, include
+
 from rest_framework.routers import DefaultRouter
+
+from . import views
+
 # ____________________________________________________________________________________________________
 
-router=DefaultRouter()
-app_name="api-v1"
-router.register('post',views.PostModelViewSet,basename='post')
-router.register('category',views.CategoryModelViewSet,basename='category')
-urlpatterns=router.urls
+router = DefaultRouter()
+app_name = "api-v1"
+router.register("post", views.PostModelViewSet, basename="post")
+router.register("category", views.CategoryModelViewSet, basename="category")
+urlpatterns = router.urls
 
 # urlpatterns = [
 
@@ -18,6 +21,3 @@ urlpatterns=router.urls
 #     # path('post/<int:pk>/',views.PostDetail.as_view(),name="post-detail"),
 #     path('post/<int:pk>/',views.PostViewSet.as_view({'get':'retrieve'}),name='post-detail'),
 # ]
-
-
-

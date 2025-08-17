@@ -1,42 +1,56 @@
 from django.shortcuts import render
-from django.views.generic.base import TemplateView,RedirectView
+from django.views.generic.base import TemplateView, RedirectView
 from .models import Post
-from django.views.generic import ListView,DetailView,FormView,CreateView,UpdateView,DeleteView
+from django.views.generic import (
+    ListView,
+    DetailView,
+    FormView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+)
 from .forms import PostForm
-from django.contrib.auth.mixins import LoginRequiredMixin,PermissionRequiredMixin
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+)
 from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+
+
 # Create your views here.
 class IndexView(TemplateView):
     """
     this is just normal view of the site
     """
-    template_name="index.html"
-    def get_context_data(self,**kwargs):
-        context= super().get_context_data(**kwargs)
-        context["name"]="parsa"
-        context["posts"]=Post.objects.all()
+
+    template_name = "index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["name"] = "parsa"
+        context["posts"] = Post.objects.all()
         return context
 
+
 class RedirectToMaktab(RedirectView):
-    url="http://maktabkhooneh.org"
+    url = "http://maktabkhooneh.org"
 
 
-class PostListView(LoginRequiredMixin,ListView):
-    queryset=Post.objects.filter(status=True)
+class PostListView(LoginRequiredMixin, ListView):
+    queryset = Post.objects.filter(status=True)
     # model=Post
-    paginate_by=4
-    ordering='-published_date'
-    context_object_name="posts"
+    paginate_by = 4
+    ordering = "-published_date"
+    context_object_name = "posts"
     # def get_queryset(self):
     #     posts=Post.objects.filter(status=True)
-        # return posts
+    # return posts
 
 
-
-class PostDetailView(LoginRequiredMixin,DetailView):
-    model=Post
+class PostDetailView(LoginRequiredMixin, DetailView):
+    model = Post
 
 
 """
@@ -50,37 +64,31 @@ class PostCreateView(FormView):
         return super().form_valid(form)
 
 """
-class PostCreateView(LoginRequiredMixin,CreateView):
-    permission_required='blog.view_post'
-    model=Post
+
+
+class PostCreateView(LoginRequiredMixin, CreateView):
+    permission_required = "blog.view_post"
+    model = Post
     # fields=['author', 'title', 'content','status','category','published_date']
-    form_class=PostForm
-    success_url='/blog/post/'
+    form_class = PostForm
+    success_url = "/blog/post/"
 
-
-    def form_valid(self,form):
+    def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
 
+class PostEditView(LoginRequiredMixin, UpdateView):
+    model = Post
+    form_class = PostForm
+    success_url = "/blog/post/"
 
 
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = "/blog/post/"
 
-class PostEditView(LoginRequiredMixin,UpdateView):
-    model=Post
-    form_class=PostForm
-    success_url='/blog/post/'
-
-
-
-
-class PostDeleteView(LoginRequiredMixin,DeleteView):
-    model=Post
-    success_url="/blog/post/"
 
 @api_view()
 def api_post_list_view(request):
     return Response("ok")
-
-
-
