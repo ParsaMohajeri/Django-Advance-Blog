@@ -25,7 +25,6 @@ from rest_framework_simplejwt.exceptions import AuthenticationFailed
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from django.conf import settings
-
 User = get_user_model()
 
 
@@ -197,6 +196,6 @@ class ActivationResendApiView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
 
-    def get_token_for_user(self, user):
+    def get_token_for_user(self, user): 
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)
