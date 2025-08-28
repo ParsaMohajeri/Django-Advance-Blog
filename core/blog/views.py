@@ -1,10 +1,10 @@
-from django.shortcuts import render
+# from django.shortcuts import render
 from django.views.generic.base import TemplateView, RedirectView
 from .models import Post
 from django.views.generic import (
     ListView,
     DetailView,
-    FormView,
+    # FormView,
     CreateView,
     UpdateView,
     DeleteView,
@@ -12,9 +12,10 @@ from django.views.generic import (
 from .forms import PostForm
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
-    PermissionRequiredMixin,
+    # PermissionRequiredMixin,
 )
-from django.http import HttpResponse
+
+# from django.http import HttpResponse
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 

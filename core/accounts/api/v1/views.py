@@ -21,10 +21,10 @@ from django.shortcuts import get_object_or_404
 from ..utils import EmailThread
 from mail_templated import EmailMessage
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.exceptions import AuthenticationFailed
 import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from django.conf import settings
+
 User = get_user_model()
 
 
@@ -64,9 +64,7 @@ class CustomAuthToken(ObtainAuthToken):
         serializer.is_valid(raise_exception=True)
         user = serializer.validated_data["user"]
         token, created = Token.objects.get_or_create(user=user)
-        return Response(
-            {"token": token.key, "user_id": user.pk, "email": user.email}
-        )
+        return Response({"token": token.key, "user_id": user.pk, "email": user.email})
 
 
 class CustomDiscardAuthToken(APIView):
@@ -94,9 +92,7 @@ class ChangePasswordApiView(generics.GenericAPIView):
         self.object = self.get_object()
         serializer = self.get_serializer(data=request.data)
         if serializer.is_valid():
-            if not self.object.check_password(
-                serializer.data.get("old_password")
-            ):
+            if not self.object.check_password(serializer.data.get("old_password")):
                 return Response(
                     {"old_password": ["wrong password"]},
                     status=status.HTTP_400_BAD_REQUEST,
@@ -146,9 +142,7 @@ class ActivationApiView(APIView):
 
     def get(self, request, token, *args, **kwargs):
         try:
-            token = jwt.decode(
-                token, settings.SECRET_KEY, algorithms=["HS256"]
-            )
+            token = jwt.decode(token, settings.SECRET_KEY, algorithms=["HS256"])
             user_id = token.get("user_id")
         except ExpiredSignatureError:
             return Response(
@@ -162,17 +156,13 @@ class ActivationApiView(APIView):
             )
         user_obj = User.objects.get(pk=user_id)
         if user_obj.is_verified:
-            return Response(
-                {"details": "your account has already been verified"}
-            )
+            return Response({"details": "your account has already been verified"})
         user_obj.is_verified = True
 
         user_obj.save()
 
         return Response(
-            {
-                "details": "your account have been verified and activated successfully"
-            }
+            {"details": "your account have been verified and activated successfully"}
         )
 
 
@@ -196,6 +186,6 @@ class ActivationResendApiView(generics.GenericAPIView):
             status=status.HTTP_200_OK,
         )
 
-    def get_token_for_user(self, user): 
+    def get_token_for_user(self, user):
         refresh = RefreshToken.for_user(user)
         return str(refresh.access_token)

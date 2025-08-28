@@ -1,19 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from django.shortcuts import get_object_or_404
 from rest_framework.permissions import (
-    IsAdminUser,
+    # IsAdminUser,
     IsAuthenticatedOrReadOnly,
-    IsAuthenticated,
+    # IsAuthenticated,
 )
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework.generics import (
-    GenericAPIView,
-    ListCreateAPIView,
-    RetrieveUpdateDestroyAPIView,
-)
-from rest_framework import mixins
 from rest_framework import viewsets
 from rest_framework.filters import SearchFilter, OrderingFilter
 from .paginations import DefaultPagination
@@ -45,7 +35,7 @@ def postList(request):
     permission_classes=[IsAuthenticated]
     serializer_class=PostSerializer
     def get(self,request):
-        """retriveing a list of posts"""
+        """retrieving a list of posts"""
         posts= Post.objects.filter(status=True)
         serializer=PostSerializer(posts,many=True)
         return Response (serializer.data)
@@ -110,7 +100,7 @@ def postDetail(request,id):
 
 
 class PostModelViewSet(viewsets.ModelViewSet):
-    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
+    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOrReadOnly]
     serializer_class = PostSerializer
     queryset = Post.objects.filter(status=True)
     filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
