@@ -28,5 +28,5 @@ flake8
 autoflake
 pytest
 pytest-django
-
+Faker
 
