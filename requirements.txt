@@ -16,7 +16,7 @@ drf-yasg[validation]==1.21.7
 djangorestframework-simplejwt
 
 # deployment module
-
+gunicorn
 
 # email third party modules
 django-mail-templated
@@ -29,7 +29,7 @@ flake8
 autoflake
 pytest
 pytest-django
-Faker
+Faker   
 
 # background process and cache
 celery
